@@ -35,7 +35,16 @@ export async function signIn(email: string, password: string) {
     body: JSON.stringify({ email, password }),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error_description || data.message || "Email ou senha incorretos");
+  if (!res.ok) {
+    const msg = data.error_description || data.msg || data.message || "";
+    if (msg.toLowerCase().includes("email not confirmed") || msg.toLowerCase().includes("email confirmation")) {
+      throw new Error("Email ainda não confirmado. Verifique sua caixa de entrada e clique no link de confirmação — ou peça ao administrador para desativar a confirmação no painel do Supabase.");
+    }
+    if (msg.toLowerCase().includes("invalid login") || msg.toLowerCase().includes("invalid credentials")) {
+      throw new Error("Email ou senha incorretos. Verifique seus dados e tente novamente.");
+    }
+    throw new Error(msg || "Erro ao fazer login. Tente novamente.");
+  }
   return data;
 }
 
