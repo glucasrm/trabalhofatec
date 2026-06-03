@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "Ka6T_2fVpgnyX4gS0rhZM"
+uri = "file://artifacts/biblioteca/README.md"
+type = "text"
+title = "README.md — Biblioteca Online"
